@@ -132,11 +132,17 @@ class Model:
 		return accuracy
 
 	@lazy_property
-	def cross_entropy(self):
+	def cross_entropy(self, l1=True, lambd=0.001):
 		cross_entropy = tf.reduce_mean(
 			-tf.reduce_sum(self.labels * tf.log(tf.clip_by_value(self.prediction, 1e-50, 1.0)), reduction_indices=[1]))
+		if l1:
+			l1_regularizer = tf.contrib.layers.l1_regularizer(scale=lambd, scope=None)
+			weights = tf.trainable_variables()
+			regularization_penalty = tf.contrib.layers.apply_regularization(l1_regularizer, weights)
+			cross_entropy = cross_entropy + regularization_penalty
 		tf.summary.scalar('cross_entropy', cross_entropy)
 		return cross_entropy
+
 
 	@property
 	def save_file(self):

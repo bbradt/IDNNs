@@ -132,5 +132,9 @@ def select_network_arch(type_net):
 		layers_sizes = [[1, 1, 1, 1]]
 	else:
 		# Custom network
-		layers_sizes = [map(int, inner.split(',')) for inner in re.findall("\[(.*?)\]", type_net)]
+		inner = re.findall("\[(.*?)\]", type_net)
+		print(inner)
+		listInStr = inner[0].split(',')
+		layers_sizes = [[int(j) for j in listInStr]]
+		print(layers_sizes)
 	return layers_sizes

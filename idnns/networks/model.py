@@ -5,6 +5,7 @@ from idnns.networks.utils import _convert_string_dtype
 from idnns.networks.models import multi_layer_perceptron
 from idnns.networks.models import deepnn
 from idnns.networks.ops import *
+from idnns.networks.network import L1_LAMBDA, L2_LAMBDA
 
 
 def lazy_property(function):
@@ -132,20 +133,20 @@ class Model:
         return accuracy
 
     @lazy_property
-    def cross_entropy(self, l1=True, lambd_1=0.00001, l2=True, lambd_2=0.00001):
+    def cross_entropy(self, l1_lambda=L1_LAMBDA, l2_lambda=L2_LAMBDA):
         cross_entropy = tf.reduce_mean(
             -tf.reduce_sum(self.labels * tf.log(tf.clip_by_value(
                     self.prediction, 1e-50, 1.0)), reduction_indices=[1]))
-        if l1:
+        if l1_lambda:
             l1_regularizer = tf.contrib.layers.l1_regularizer(
-                    scale=lambd_1, scope=None)
+                    scale=l1_lambda, scope=None)
             weights = tf.trainable_variables()
             regularization_penalty = tf.contrib.layers.apply_regularization(
                     l1_regularizer, weights)
             cross_entropy = cross_entropy + regularization_penalty
-        if l2:
+        if l2_lambda:
             l2_regularizer = tf.contrib.layers.l2_regularizer(
-                    scale=lambd_2, scope=None)
+                    scale=l2_lambda, scope=None)
             weights = tf.trainable_variables()
             regularization_penalty = tf.contrib.layers.apply_regularization(
                     l2_regularizer, weights)

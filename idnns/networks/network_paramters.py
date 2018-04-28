@@ -104,6 +104,8 @@ def get_default_parser(num_of_samples=None):
 	parser.add_argument('-data_dir',
 	                    '-dd', dest="data_dir", default='data/',
 	                    help='The directory for finding the data')
+        parser.add_argument('-l2_reg', '-l2', dest='l2_lambda', default=0.0, help='\lambda for L2 regularization')
+        parser.add_argument('-l1_reg', '-l1', dest='l1_lambda', default=0.0, help='\lambda for L1 regularization')
 	args = parser.parse_args()
 	args.inds = [map(int, inner.split(',')) for inner in re.findall("\[(.*?)\]", args.inds)]
 	if num_of_samples != None:

@@ -13,8 +13,6 @@ from idnns.networks.utils import load_data
 # from idnns.network import utils
 # import idnns.plots.plot_gradients as plt_grads
 NUM_CORES = multiprocessing.cpu_count()
-L1_LAMBDA = 0.0
-L2_LAMBDA = 0.0
 
 class informationNetwork():
 	"""A class that store the network, train it and calc it's information (can be several of networks) """
@@ -37,11 +35,8 @@ class informationNetwork():
 		self.interval_information_display = args.interval_information_display
 		self.save_ws = args.save_ws
 		self.name = args.data_dir + args.data_name
-                self.l1_lambda = args.l1_lambda
-		L1_LAMBDA = args.l1_lambda
-                self.l2_lambda = args.l2_lambda 
-		L2_LAMBDA = args.l2_lambda
-		print("Lambda: L1: %f, L2: %f" % (L1_LAMBDA, L2_LAMBDA))
+		self.l1_lambda = args.l1_lambda
+		self.l2_lambda = args.l2_lambda
 		# The arch of the networks
 		self.layers_sizes = netp.select_network_arch(args.net_type)
 		# The percents of the train data samples
@@ -104,7 +99,8 @@ class informationNetwork():
 			                                      self.calc_information,
 			                                      self.calc_information_last, self.num_of_bins,
 			                                      self.interval_information_display, self.save_ws, self.rand_int,
-			                                      self.cov_net)
+			                                      self.cov_net,
+                                                              l1=self.l1_lambda, l2=self.l2_lambda)
 			                                     for i in range(len(self.train_samples)) for j in
 			                                     range(len(self.layers_sizes)) for k in range(self.num_of_repeats))
 
@@ -118,7 +114,8 @@ class informationNetwork():
 			                                         self.calc_information,
 			                                         self.calc_information_last, self.num_of_bins,
 			                                         self.interval_information_display,
-			                                         self.save_ws, self.rand_int, self.cov_net)
+			                                         self.save_ws, self.rand_int, self.cov_net,
+								 l1=self.l1_lambda, l2=self.l2_lambda)
 			           for i in range(len(self.train_samples)) for j in range(len(self.layers_sizes)) for k in
 			           range(self.num_of_repeats)]
 

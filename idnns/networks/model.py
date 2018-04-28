@@ -5,8 +5,6 @@ from idnns.networks.utils import _convert_string_dtype
 from idnns.networks.models import multi_layer_perceptron
 from idnns.networks.models import deepnn
 from idnns.networks.ops import *
-from idnns.networks.network import L1_LAMBDA, L2_LAMBDA
-
 
 def lazy_property(function):
     attribute = '_cache_' + function.__name__
@@ -26,7 +24,7 @@ class Model:
     """A class that represent model of network"""
 
     def __init__(self, input_size, layerSize, num_of_classes, learning_rate_local=0.001, save_file='',
-                 activation_function=0, cov_net=False):
+                 activation_function=0, cov_net=False, l1_lambda=0.0, l2_lambda=0.0):
         self.covnet = cov_net
         self.input_size = input_size
         self.layerSize = layerSize
@@ -37,6 +35,8 @@ class Model:
         self.learning_rate_local = learning_rate_local
         self._save_file = save_file
         self.hidden = None
+        self.l1_lambda = l1_lambda
+        self.l2_lambda = l2_lambda
         self.savers = []
         if activation_function == 1:
             self.activation_function = tf.nn.relu
@@ -133,20 +133,20 @@ class Model:
         return accuracy
 
     @lazy_property
-    def cross_entropy(self, l1_lambda=L1_LAMBDA, l2_lambda=L2_LAMBDA):
+    def cross_entropy(self):
         cross_entropy = tf.reduce_mean(
             -tf.reduce_sum(self.labels * tf.log(tf.clip_by_value(
                     self.prediction, 1e-50, 1.0)), reduction_indices=[1]))
-        if l1_lambda:
+        if self.l1_lambda:
             l1_regularizer = tf.contrib.layers.l1_regularizer(
-                    scale=l1_lambda, scope=None)
+                    scale=self.l1_lambda, scope=None)
             weights = tf.trainable_variables()
             regularization_penalty = tf.contrib.layers.apply_regularization(
                     l1_regularizer, weights)
             cross_entropy = cross_entropy + regularization_penalty
-        if l2_lambda:
+        if self.l2_lambda:
             l2_regularizer = tf.contrib.layers.l2_regularizer(
-                    scale=l2_lambda, scope=None)
+                    scale=self.l2_lambda, scope=None)
             weights = tf.trainable_variables()
             regularization_penalty = tf.contrib.layers.apply_regularization(
                     l2_regularizer, weights)

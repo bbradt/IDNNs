@@ -27,13 +27,14 @@ def train_and_calc_inf_network(i, j, k, layerSize, num_of_ephocs, learning_rate_
                                data_sets_org,
                                model_type, percent_of_train, interval_accuracy_display, calc_information,
                                calc_information_last, num_of_bins,
-                               interval_information_display, save_ws, rand_int, cov_net):
+                               interval_information_display, save_ws, rand_int, cov_net,
+                               l1=0.0, l2=0.0):
 	"""Train the network and calculate it's information"""
 	network_name = '{0}_{1}_{2}_{3}'.format(i, j, k, rand_int)
 	print ('Training network  - {0}'.format(network_name))
 	network = train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, indexes, save_grads,
 	                        data_sets_org, model_type, percent_of_train, interval_accuracy_display, network_name,
-	                        cov_net)
+	                        cov_net, l1=0.0, l2=0.0)
 	network['information'] = []
 	if calc_information:
 		print ('Calculating the infomration')
@@ -96,7 +97,7 @@ def print_accuracy(batch_points_test, data_sets, model, sess, j, acc_train_array
 
 def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, indexes, save_grads,
                   data_sets_org, model_type, percent_of_train, interval_accuracy_display,
-                  name, covn_net):
+                  name, covn_net, l1=0.0, l2=0.0):
 	"""Train the nework"""
 	tf.reset_default_graph()
 	data_sets = data_shuffle(data_sets_org, percent_of_train)

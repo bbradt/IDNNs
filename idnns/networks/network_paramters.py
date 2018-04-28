@@ -130,6 +130,10 @@ def select_network_arch(type_net):
 		layers_sizes = [[10]]
 	elif type_net == '6':
 		layers_sizes = [[1, 1, 1, 1]]
+	elif type_net == '0':
+		layers_sizes = [[100, 100, 100, 4]]
+	elif type_net == '00':
+		layers_sizes = [[100, 100, 100, 4], [100, 100, 100, 4], [100, 100, 100, 4]]
 	else:
 		# Custom network
 		inner = re.findall("\[(.*?)\]", type_net)

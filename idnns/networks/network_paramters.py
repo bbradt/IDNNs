@@ -22,7 +22,7 @@ def get_default_parser(num_of_samples=None):
 	                    type=int, help='The size of the batch')
 
 	parser.add_argument('-learning_rate',
-	                    '-l', dest="learning_rate", default=0.0004,
+	                    '-l', dest="learning_rate", default=0.0001,
 	                    type=float,
 	                    help='The learning rate of the network')
 
@@ -39,7 +39,7 @@ def get_default_parser(num_of_samples=None):
 	                    help='The architecture of the networks')
 
 	parser.add_argument('-inds',
-	                    '-i', dest="inds", default='[80]',
+	                    '-i', dest="inds", default='[60]',
 	                    help='The percent of the training data')
 
 	parser.add_argument('-name',
@@ -72,7 +72,7 @@ def get_default_parser(num_of_samples=None):
 	                    help='if we want to calculate the MI in the network only for the last epoch')
 
 	parser.add_argument('-save_grads',
-	                    '-sgrad', dest="save_grads", type=str2bool, nargs='?', const=False, default=False,
+	                    '-sgrad', dest="save_grads", type=str2bool, nargs='?', const=False, default=True,
 	                    help='if we want to save the gradients in the network')
 
 	parser.add_argument('-run_in_parallel',

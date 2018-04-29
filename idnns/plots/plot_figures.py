@@ -294,8 +294,7 @@ def load_figures(mode, str_names=None):
         f.subplots_adjust(left=0.09, bottom=0.15, right=.928, top=0.94, wspace=0.03, hspace=0.04)
         yticks = [0, 1, 2, 3]
         xticks = [3, 6, 9, 12, 15]
-    # for 3 rows with 2 colmus
-    if mode == 1:
+    if mode == 1:  # figure 5 from paper
         font_size = 34
         axis_font = 26
         bar_font = 28
@@ -313,7 +312,7 @@ def load_figures(mode, str_names=None):
         sizes = [[1010, 1010], [1017, 1020], [1700, 920]]
 
     # for 2 rows with 3 colmus
-    if mode == 11:
+    if mode == 11:  # figure 5 from paper
         font_size = 34
         axis_font = 26
         bar_font = 28
@@ -331,7 +330,7 @@ def load_figures(mode, str_names=None):
         colorbar_axis = [0.93, 0.1, 0.035, 0.76]
         sizes = [[1010, 1010, 1017], [1020, 1700, 920]]
     # one figure
-    if mode == 2 or mode ==6:
+    if mode == 2 or mode == 6:  # figure 4?
         axis_font = 28
         bar_font = 28
         fig_size = (14, 10)
@@ -358,7 +357,8 @@ def load_figures(mode, str_names=None):
         f, (axes) = plt.subplots(1, len(str_names), sharey=True, figsize=fig_size)
         if len(str_names) == 1:
             axes = np.vstack(np.array([axes]))
-        f.subplots_adjust(left=0.097, bottom=0.12, right=.90, top=0.99, wspace=0.03, hspace=0.03)
+        f.subplots_adjust(left=0.097, bottom=0.12,
+                          right=.90, top=0.99, wspace=0.03, hspace=0.03)
         sizes = [[-1]]
         colorbar_axis = [0.933, 0.125, 0.03, 0.83]
         xticks = [0, 2, 4, 6, 8, 10, 12]
@@ -374,9 +374,10 @@ def load_figures(mode, str_names=None):
         sizes = [[-1, -1]]
         colorbar_axis = [0.948, 0.08, 0.025, 0.81]
         axes = np.vstack(axes).T
-        f.subplots_adjust(left=0.07, bottom=0.15, right=.933, top=0.94, wspace=0.12, hspace=0.04)
-        #yticks = [0, 0.2, 0.4, 0.6, 0.8, 1]
-        #xticks = [1, 3, 5, 7, 9, 11]
+        f.subplots_adjust(left=0.07, bottom=0.15, right=.933,
+                          top=0.94, wspace=0.12, hspace=0.04)
+        # yticks = [0, 0.2, 0.4, 0.6, 0.8, 1]
+        # xticks = [1, 3, 5, 7, 9, 11]
 
         yticks = [0,  1,  2, 3, 3]
         xticks = [2, 5, 8, 11,14, 17]
@@ -411,7 +412,7 @@ def plot_figures(str_names, mode, save_name):
     plt.show()
 
 
-def plot_norms(axes, epochsInds, norms1, norms2):
+def plot_norms(axes, epochsInds, norms1, norms2):  # figure 4 from paper
     """Plot the norm l1 and l2 of the given name"""
     axes.plot(epochsInds, np.mean(norms1[:,0,0,:], axis=0), color='g')
     axes.plot(epochsInds, np.mean(norms2[:,0,0,:], axis=0), color='b')
@@ -474,7 +475,9 @@ def update_axes(axes, xlabel, ylabel, xlim, ylim, title, xscale, yscale, x_ticks
 
 
 def extract_array(data, name):
-    results = [[data[j,k][name] for k in range(data.shape[1])] for j in range(data.shape[0])]
+    print(data.shape, name)
+    results = [[data[j][k][name] for k in range(data.shape[1])]
+               for j in range(data.shape[0])]
     return results
 
 def update_bars_num_of_ts(num, p_ts, H_Xgt,DKL_YgX_YgT, axes, ind_array):

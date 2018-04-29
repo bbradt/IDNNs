@@ -148,8 +148,8 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
                 _, tr_err = sess.run([optimizer, model.accuracy], feed_dict=feed_dict)
                 acc_train_array.append(tr_err)
                 if j in indexes:
-                    epochs_grads_temp, loss_tr, weights_local, tr_err= sess.run(
-                        [grads, model.cross_entropy, model.weights_all, model.accuracy],
+                    epochs_grads_temp, loss_tr, weights_local = sess.run(
+                        [grads, model.cross_entropy, model.weights_all],
                         feed_dict=feed_dict)
                     loss_func_train[k] = loss_tr
                     train_prediction[k] = tr_err
@@ -161,6 +161,18 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
                     epochs_grads.append(epochs_grads_temp)
                     for ii in range(len(current_weights)):
                         current_weights[ii].append(weights_local[ii])
+            for i in range(0, len(batch_points_test) - 1):
+                batch_xs = data_sets.train.data[batch_points_test[i]:batch_points_test[i + 1]]
+                batch_ys = data_sets.train.labels[batch_points_test[i]:batch_points_test[i + 1]]
+                feed_dict = {model.x: batch_xs, model.labels: batch_ys}
+                _, te_err = sess.run([optimizer, model.accuracy], feed_dict=feed_dict)
+                acc_test_array.append(tr_err)
+                if j in indexes:
+                    epochs_grads_temp, loss_te, weights_local, te_err= sess.run(
+                        [grads, model.cross_entropy, model.weights_all, model.accuracy],
+                        feed_dict=feed_dict)
+                    loss_func_test[k] = loss_te
+                    test_prediction[k] = te_err
             if j in indexes:
                 if save_grads:
                     gradients[k] = epochs_grads

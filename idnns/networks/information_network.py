@@ -23,7 +23,7 @@ class informationNetwork():
         self.cov_net = args.cov_net
         self.calc_information = args.calc_information
         self.run_in_parallel = args.run_in_parallel
-        self.num_ephocs = args.num_ephocs
+        self.num_epochs = args.num_ephocs
         self.learning_rate = args.learning_rate
         self.batch_size = args.batch_size
         self.activation_function = args.activation_function
@@ -92,7 +92,7 @@ class informationNetwork():
         if self.run_in_parallel:
             results = Parallel(n_jobs=NUM_CORES)(delayed(nn.train_network)
                                                  (self.layers_sizes[j],
-                                                  self.num_ephocs, self.learning_rate, self.batch_size,
+                                                  self.num_epochs, self.learning_rate, self.batch_size,
                                                   self.epochs_indexes, self.save_grads, self.data_sets,
                                                   self.activation_function,
                                                   self.train_samples, self.interval_accuracy_display,
@@ -107,7 +107,7 @@ class informationNetwork():
         else:
             results = [nn.train_and_calc_inf_network(i, j, k,
                                                      self.layers_sizes[j],
-                                                     self.num_ephocs, self.learning_rate, self.batch_size,
+                                                     self.num_epochs, self.learning_rate, self.batch_size,
                                                      self.epochs_indexes, self.save_grads, self.data_sets,
                                                      self.activation_function,
                                                      self.train_samples, self.interval_accuracy_display,

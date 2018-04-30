@@ -36,6 +36,7 @@ class informationNetwork():
     self.interval_information_display = args.interval_information_display
     self.save_ws = args.save_ws
     self.name = args.data_dir + args.data_name
+    self.data_name = args.data_name
     self.l1_lambda = float(args.l1_lambda)
     self.l2_lambda = float(args.l2_lambda)
     # The arch of the networks

@@ -199,40 +199,32 @@ def plot_animation(name_s, save_name):
     data_array = utils.get_data(name_s[0][0])
     data = data_array['information']
     data = np.squeeze(data)
-    print(data)
-    print(data.shape)
     epochsInds = data_array['params']['epochsInds']
-    print(epochsInds)
     loss_train_data = data_array['loss_train']
     loss_test_data = data_array['loss_test']
-    print(loss_test_data )
     f, (axes) = plt.subplots(2, 1)
     f.subplots_adjust(left=0.14, bottom=0.1, right=.928, top=0.94, wspace=0.13, hspace=0.55)
     colors = LAYERS_COLORS
-    #new/old version
+    #new/old versio\
+    if len(data.shape) < 3:
+        data = np.array([data])
     Ix = np.empty(data.shape)
     Iy = np.empty(data.shape)
-    for i in range(data.shape[0]-1):
-        for j in range(data.shape[1]-1):
-            for k in range(data.shape[2]-1):
+    for i in range(data.shape[0]):
+        for j in range(data.shape[1]):
+            for k in range(data.shape[2]):
                 Ix[i][j][k] = data[i][j][k]['local_IXT']
                 Iy[i][j][k] = data[i][j][k]['local_ITY']
-    # if False:
-    #     Ix = np.squeeze(data[0,:,-1,-1, :, :])
-    #     Iy = np.squeeze(data[1,:,-1,-1, :, :])
-    # else:
-    #     Ix = np.squeeze(data[0, :, -1, -1, :, :])[np.newaxis,:,:]
-    #     Iy = np.squeeze(data[1, :, -1, -1, :, :])[np.newaxis,:,:]
     #Interploation of the samplings (because we don't cauclaute the infomration in each epoch)
     interp_data_x = interp1d(epochsInds,  Ix, axis=1)
     interp_data_y = interp1d(epochsInds,  Iy, axis=1)
     new_x = np.arange(0,epochsInds[-1])
     new_data  = np.array([interp_data_x(new_x), interp_data_y(new_x)])
-    print(new_data)
 
     # train_data = interp1d(epochsInds,  np.squeeze(train_data), axis=1)(new_x)
     # test_data = interp1d(epochsInds,  np.squeeze(test_data), axis=1)(new_x)
 
+    print(loss_train_data)
     if print_loss:
         loss_train_data =  interp1d(epochsInds,  np.squeeze(loss_train_data), axis=1)(new_x)
         loss_test_data=interp1d(epochsInds,  np.squeeze(loss_test_data), axis=1)(new_x)

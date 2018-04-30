@@ -63,6 +63,10 @@ def get_default_parser(num_of_samples=None):
 	                    '-sws', dest="save_ws", type=str2bool, nargs='?', const=False, default=False,
 	                    help='if we want to save the output of the layers')
 
+	parser.add_argument('-anim',
+	                    '-anm', dest="anim", type=str2bool, nargs='?', const=False, default=False,
+	                    help='if we want to save an animation')
+
 	parser.add_argument('-calc_information',
 	                    '-cinf', dest="calc_information", type=str2bool, nargs='?', const=True, default=True,
 	                    help='if we want to calculate the MI in the network for all the epochs')

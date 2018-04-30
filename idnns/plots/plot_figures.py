@@ -156,7 +156,7 @@ def update_line_each_neuron(num, print_loss, Ix, axes, Iy, train_data, accuracy_
         axes[1].set_xlim([0,epochs_bins[nereast_val]])
         axes[1].legend(('Accuracy', 'Loss Function'), loc='best')
 
-def update_line(num, print_loss, data, axes, epochsInds, test_error, test_data, epochs_bins, loss_train_data, loss_test_data, colors,
+def update_line(num, print_loss, data, axes, epochsInds, epochs_bins,colors,test_error,
                 font_size = 18, axis_font=16, x_lim = [0,12.2], y_lim=[0, 1.08], x_ticks = [], y_ticks = []):
     """Update the figure of the infomration plane for the movie"""
     #Print the line between the points
@@ -189,39 +189,53 @@ def update_line(num, print_loss, data, axes, epochsInds, test_error, test_data, 
 def plot_animation(name_s, save_name):
     """Plot the movie for all the networks in the information plane"""
     # If we want to print the loss function also
-    print_loss  = False
+    print_loss  = True
     #The bins that we extened the x axis of the accuracy each time
     epochs_bins = [0, 500, 1500, 3000, 6000, 10000, 20000]
 
     data_array = utils.get_data(name_s[0][0])
-    data = data_array['infomration']
-    epochsInds = data_array['epochsInds']
+    data = data_array['information']
+    data = np.squeeze(data)
+    print(data)
+    print(data.shape)
+    epochsInds = data_array['params']['epochsInds']
+    print(epochsInds)
     loss_train_data = data_array['loss_train']
-    loss_test_data = data_array['loss_test_data']
+    loss_test_data = data_array['loss_test']
+    print(loss_test_data )
     f, (axes) = plt.subplots(2, 1)
     f.subplots_adjust(left=0.14, bottom=0.1, right=.928, top=0.94, wspace=0.13, hspace=0.55)
     colors = LAYERS_COLORS
     #new/old version
-    if False:
-        Ix = np.squeeze(data[0,:,-1,-1, :, :])
-        Iy = np.squeeze(data[1,:,-1,-1, :, :])
-    else:
-        Ix = np.squeeze(data[0, :, -1, -1, :, :])[np.newaxis,:,:]
-        Iy = np.squeeze(data[1, :, -1, -1, :, :])[np.newaxis,:,:]
+    Ix = np.empty(data.shape)
+    Iy = np.empty(data.shape)
+    for i in range(data.shape[0]-1):
+        for j in range(data.shape[1]-1):
+            for k in range(data.shape[2]-1):
+                Ix[i][j][k] = data[i][j][k]['local_IXT']
+                Iy[i][j][k] = data[i][j][k]['local_ITY']
+    # if False:
+    #     Ix = np.squeeze(data[0,:,-1,-1, :, :])
+    #     Iy = np.squeeze(data[1,:,-1,-1, :, :])
+    # else:
+    #     Ix = np.squeeze(data[0, :, -1, -1, :, :])[np.newaxis,:,:]
+    #     Iy = np.squeeze(data[1, :, -1, -1, :, :])[np.newaxis,:,:]
     #Interploation of the samplings (because we don't cauclaute the infomration in each epoch)
     interp_data_x = interp1d(epochsInds,  Ix, axis=1)
     interp_data_y = interp1d(epochsInds,  Iy, axis=1)
     new_x = np.arange(0,epochsInds[-1])
     new_data  = np.array([interp_data_x(new_x), interp_data_y(new_x)])
-    """"
-    train_data = interp1d(epochsInds,  np.squeeze(train_data), axis=1)(new_x)
-    test_data = interp1d(epochsInds,  np.squeeze(test_data), axis=1)(new_x)
-    """
+    print(new_data)
+
+    # train_data = interp1d(epochsInds,  np.squeeze(train_data), axis=1)(new_x)
+    # test_data = interp1d(epochsInds,  np.squeeze(test_data), axis=1)(new_x)
+
     if print_loss:
         loss_train_data =  interp1d(epochsInds,  np.squeeze(loss_train_data), axis=1)(new_x)
         loss_test_data=interp1d(epochsInds,  np.squeeze(loss_test_data), axis=1)(new_x)
+    print(loss_test_data )
     line_ani = animation.FuncAnimation(f, update_line, len(new_x), repeat=False,
-                                       interval=1, blit=False, fargs=(print_loss, new_data, axes,new_x,train_data,test_data,epochs_bins, loss_train_data,loss_test_data, colors))
+                                       interval=100, blit=False, fargs=(print_loss, new_data, axes,new_x,epochs_bins, colors,loss_test_data))
     Writer = animation.writers['ffmpeg']
     writer = Writer(fps=100)
     #Save the movie
@@ -263,7 +277,8 @@ def plot_animation_each_neuron(name_s, save_name, print_loss=False):
     writer = Writer(fps=100)
     #Save the movie
     line_ani.save(save_name+'_movie.mp4',writer=writer,dpi=250)
-    plt.show()
+
+    #plt.show()
 
 
 def plot_snapshots(name_s, save_name, i, time_stemps=[13, 180, 963],font_size = 36,axis_font = 28,fig_size = (14, 6)):
@@ -409,7 +424,7 @@ def plot_figures(str_names, mode, save_name):
             else:
                 plot_all_epochs(data_array, I_XT_array, I_TY_array, axes, epochsInds, f, i, j, sizes[i][j], font_size, yticks, xticks,
                                 colorbar_axis, title_strs[i][j], axis_font, bar_font, save_name)
-    plt.show()
+    #plt.show()
 
 
 def plot_norms(axes, epochsInds, norms1, norms2):  # figure 4 from paper

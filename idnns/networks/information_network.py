@@ -168,5 +168,5 @@ class informationNetwork():
     str_names = [[self.dir_saved]]
     mode = 2
     save_name = 'figure'
-    #plt_fig.plot_figures(str_names, mode, save_name)
+    plt_fig.plot_figures(str_names, mode, save_name)
     plt_fig.plot_animation(str_names, save_name)

@@ -1,3 +1,5 @@
+"""Outputs muliple error/loss line plots on one figure. Move the relevant jobs folders into a subfolder of jobs titled multiLossErr.  Only works well for 7 options since after 7, the colors repeat"""
+
 import os
 import pickle as pkl
 import matplotlib.pyplot as plt

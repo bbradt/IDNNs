@@ -242,7 +242,7 @@ def plot_animation(name_s, save_name):
     Writer = animation.writers['ffmpeg']
     writer = Writer(fps=100)
     #Save the movie
-    line_ani.save(save_name+'_movie2.mp4',writer=writer,dpi=250)
+    line_ani.save('figures/' + save_name+'_movie2.mp4',writer=writer,dpi=250)
     #plt.show()
 
 

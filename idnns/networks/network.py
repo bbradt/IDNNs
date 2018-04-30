@@ -162,8 +162,8 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
                     for ii in range(len(current_weights)):
                         current_weights[ii].append(weights_local[ii])
             for i in range(0, len(batch_points_test) - 1):
-                batch_xs = data_sets.train.data[batch_points_test[i]:batch_points_test[i + 1]]
-                batch_ys = data_sets.train.labels[batch_points_test[i]:batch_points_test[i + 1]]
+                batch_xs = data_sets.test.data[batch_points_test[i]:batch_points_test[i + 1]]
+                batch_ys = data_sets.test.labels[batch_points_test[i]:batch_points_test[i + 1]]
                 feed_dict = {model.x: batch_xs, model.labels: batch_ys}
                 _, te_err = sess.run([optimizer, model.accuracy], feed_dict=feed_dict)
                 acc_test_array.append(tr_err)

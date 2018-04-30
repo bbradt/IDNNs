@@ -118,6 +118,7 @@ def get_default_parser(num_of_samples=None):
 
 
 def select_network_arch(type_net):
+<<<<<<< HEAD
     """Selcet the architectures of the networks according to their type
     we can choose also costume network for example type_net=[size_1, size_2, size_3]"""
     if type_net == '1':
@@ -148,3 +149,35 @@ def select_network_arch(type_net):
         layers_sizes = [[int(j) for j in listInStr]]
         print(layers_sizes)
     return layers_sizes
+=======
+	"""Selcet the architectures of the networks according to their type
+	we can choose also costume network for example type_net=[size_1, size_2, size_3]"""
+	if type_net == '1':
+		layers_sizes = [[10, 7, 5, 4, 3]]
+	elif type_net == '1-2-3':
+		layers_sizes = [[10, 9, 7, 7, 3], [10, 9, 7, 5, 3], [10, 9, 7, 3, 3]]
+	elif type_net == '11':
+	elif type_net == '2':
+	elif type_net == '3':
+		layers_sizes = [[10, 7, 5]]
+	elif type_net == '4':
+		layers_sizes = [[10, 7]]
+	elif type_net == '5':
+		layers_sizes = [[10]]
+	elif type_net == '6':
+		layers_sizes = [[1, 1, 1, 1]]
+	elif type_net == '0':
+		layers_sizes = [[100, 100, 100, 4]]
+	elif type_net == '7':
+		layers_sizes = [[30, 30]]
+	elif type_net == '00':
+		layers_sizes = [[100, 100, 100, 4], [100, 100, 100, 4], [100, 100, 100, 4]]
+	else:
+		# Custom network
+		inner = re.findall("\[(.*?)\]", type_net)
+		print(inner)
+		listInStr = inner[0].split(',')
+		layers_sizes = [[int(j) for j in listInStr]]
+		print(layers_sizes)
+	return layers_sizes
+>>>>>>> 258cbde93b78df9e249a022ff0e39642598ffda3

@@ -170,4 +170,4 @@ class informationNetwork():
     mode = 2
     save_name = '%s_information_plane_lr%.4f_l1%.4f_l2%.4f_act%s' % (self.data_name, self.learning_rate, self.l1_lambda, self.l2_lambda, self.activation_function)
     plt_fig.plot_figures(str_names, mode, save_name)
-    plt_fig.plot_animation(str_names, save_name)
+    # plt_fig.plot_animation(str_names, save_name)

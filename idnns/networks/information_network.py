@@ -34,6 +34,7 @@ class informationNetwork():
         self.num_of_bins = args.num_of_bins
         self.interval_information_display = args.interval_information_display
         self.save_ws = args.save_ws
+        self.data_name = args.data_name
         self.name = args.data_dir + args.data_name
         self.l1_lambda = float(args.l1_lambda)
         self.l2_lambda = float(args.l2_lambda)
@@ -79,7 +80,7 @@ class informationNetwork():
         data = {'information': self.information,
                 'test_error': self.test_error, 'train_error': self.train_error, 'var_grad_val': self.grads,
                 'loss_test': self.loss_test, 'loss_train': self.loss_train, 'params': self.params
-            , 'l1_norms': self.l1_norms, 'weights': self.weights, 'ws': self.ws}
+            , 'l1_norms': self.l1_norms, 'weights': self.weights, 'ws': self.ws, 'l2_norms':self.l2_norms}
 
         if not os.path.exists(directory):
             os.makedirs(directory)
@@ -167,5 +168,12 @@ class informationNetwork():
     def plot_network(self):
         str_names = [[self.dir_saved]]
         mode = 2
-        save_name = 'figure'
+        save_name = '%s_information_plane_lr%.4f_l1%.4f_l2%.4f_act%s' % (self.data_name, self.learning_rate, self.l1_lambda, self.l2_lambda, self.activation_function)
         plt_fig.plot_figures(str_names, mode, save_name)
+        #mode = 3
+        #save_name = 'figure2'
+        #plt_fig.plot_figures(str_names, mode, save_name)
+        #mode = 6
+        #save_name = 'figure3'
+        #plt_fig.plot_figures(str_names, mode, save_name)
+

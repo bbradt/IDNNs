@@ -36,6 +36,8 @@ def plot_all_epochs(gen_data, I_XT_array, I_TY_array, axes, epochsInds, f, index
         for i in range(len(fig_data)):
             ax1.plot(epochsInds, fig_data[i],':', linewidth = 3 , label = fig_strs[i])
         ax1.legend(loc='best')
+    print("Saving %s" % 'err_'+save_name+'.png')
+    f1.savefig('figures/err_'+save_name+'.png', dpi=500, format='png')
     f = plt.figure(figsize=(12, 8))
     axes = f.add_subplot(111)
     axes = np.array([[axes]])
@@ -72,7 +74,8 @@ def plot_all_epochs(gen_data, I_XT_array, I_TY_array, axes, epochsInds, f, index
     #Save the figure and add color bar
     if index_i ==axes.shape[0]-1 and index_j ==axes.shape[1]-1:
         utils.create_color_bar(f, cmap, colorbar_axis, bar_font, epochsInds, title='Epochs')
-        f.savefig(save_name+'.png', dpi=500, format='png')
+    print("Saving %s" % save_name+'.png')
+    f.savefig('figures/'+save_name+'.png', dpi=500, format='png')
 
 
 def plot_by_training_samples(I_XT_array, I_TY_array, axes, epochsInds, f, index_i, index_j, size_ind, font_size, y_ticks, x_ticks, colorbar_axis, title_str, axis_font, bar_font, save_name, samples_labels):
@@ -232,7 +235,7 @@ def plot_animation(name_s, save_name):
     writer = Writer(fps=100)
     #Save the movie
     line_ani.save(save_name+'_movie2.mp4',writer=writer,dpi=250)
-    plt.show()
+    #plt.show()
 
 
 def plot_animation_each_neuron(name_s, save_name, print_loss=False):
@@ -269,7 +272,6 @@ def plot_animation_each_neuron(name_s, save_name, print_loss=False):
     writer = Writer(fps=100)
     #Save the movie
     line_ani.save(save_name+'_movie.mp4',writer=writer,dpi=250)
-
     #plt.show()
 
 
@@ -355,7 +357,7 @@ def load_figures(mode, str_names=None):
         sizes = [[-1]]
         title_strs = [['', '']]
     # one figure with error bar
-    if mode == 3:
+    if mode == 3:  # figure 6 from the paper
         fig_size = (14, 10)
         font_size = 36
         axis_font = 28
@@ -412,7 +414,7 @@ def plot_figures(str_names, mode, save_name):
             if mode ==3:
                 plot_by_training_samples(I_XT_array, I_TY_array, axes, epochsInds, f, i, j, sizes[i][j], font_size, yticks, xticks, colorbar_axis, title_strs[i][j], axis_font, bar_font, save_name)
             elif mode ==6:
-                plot_norms(axes, epochsInds,data_array['norms1'],data_array['norms2'])
+                plot_norms(axes, epochsInds,data_array['l1_norms'],data_array['l2_norms'])
             else:
                 plot_all_epochs(data_array, I_XT_array, I_TY_array, axes, epochsInds, f, i, j, sizes[i][j], font_size, yticks, xticks,
                                 colorbar_axis, title_strs[i][j], axis_font, bar_font, save_name)
@@ -483,8 +485,11 @@ def update_axes(axes, xlabel, ylabel, xlim, ylim, title, xscale, yscale, x_ticks
 
 def extract_array(data, name):
     print(data.shape, name)
-    results = [[data[j][k][name] for k in range(data.shape[1])]
+    if len(data.shape) == 2:
+        results = [[data[j][k][name] for k in range(data.shape[1])]
                for j in range(data.shape[0])]
+    else:
+        results = [[np.mean([data[i][j][k][name] for i in range(data.shape[0])]) for k in range(data.shape[2])] for j in range(data.shape[1])]
     return results
 
 def update_bars_num_of_ts(num, p_ts, H_Xgt,DKL_YgX_YgT, axes, ind_array):
@@ -545,7 +550,7 @@ def plot_hist(str_name, save_name='dist'):
     writer = Writer(fps=50)
     #Save the movie
     line_ani.save(save_name+'_movie.mp4',writer=writer,dpi=250)
-    plt.show()
+    #plt.show()
 
 def plot_alphas(str_name, save_name='dist'):
     data_array = utils.get_data(str_name)
@@ -556,7 +561,7 @@ def plot_alphas(str_name, save_name='dist'):
         f1, axes1 = plt.subplots(1, 1)
 
         axes1.plot(I_XT_array[:,:,i])
-    plt.show()
+    #plt.show()
     return
     """
     I_XT_array_var = np.squeeze(np.array(extract_array(params, 'IXT_vartional')))
@@ -576,7 +581,7 @@ def plot_alphas(str_name, save_name='dist'):
     #axes1.set_title('Sigmma=' + str(sigmas[i]))
     axes1.set_ylim([0, 1.1])
     axes1.set_xlim([0, 1.1])
-    plt.show()
+    #plt.show()
     return
     """
     #for i in range()
@@ -590,7 +595,7 @@ def plot_alphas(str_name, save_name='dist'):
         axes1.set_title('Sigmma=' +str(sigmas[i]))
         axes1.set_ylim([0,15.1])
         axes1.set_xlim([0,15.1])
-    plt.show()
+    #plt.show()
     return
     epochs_s = data_array['params']['epochsInds']
     f, axes = plt.subplots(1, 1)
@@ -612,7 +617,7 @@ def plot_alphas(str_name, save_name='dist'):
                      label_size=20, set_yscale=False,
                      set_xscale=False, yscale=None, xscale=None, ytick_labels='', genreal_scaling=False)
     axes.legend()
-    plt.show()
+    #plt.show()
 if __name__ == '__main__':
     #The action the you want to plot
     #Plot snapshots of all the networks
@@ -685,4 +690,4 @@ if __name__ == '__main__':
             plot_snapshots(str_names[0][0], save_name, 1)
 
             #plot_eigs_movie(str_names)
-    plt.show()
+    #plt.show()

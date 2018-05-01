@@ -15,7 +15,7 @@ def load_data(name, random_labels=False):
 	C = type('type_C', (object,), {})
 	data_sets = C()
 	if name.split('/')[-1] == 'MNIST':
-		data_sets_temp = input_data.read_data_sets(os.path.dirname(sys.argv[0]) + "/data/MNIST_data/", one_hot=True)
+		data_sets_temp = input_data.read_data_sets(os.path.dirname(sys.argv[0]) + "./data/MNIST_data/", one_hot=True)
 		data_sets.data = np.concatenate((data_sets_temp.train.images, data_sets_temp.test.images), axis=0)
 		data_sets.labels = np.concatenate((data_sets_temp.train.labels, data_sets_temp.test.labels), axis=0)
 	else:

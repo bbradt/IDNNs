@@ -1,0 +1,57 @@
+\documentclass[conference, 5pt]{IEEEtran}
+
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{todonotes}
+\usepackage[inline]{enumitem}
+\usepackage{xcolor}
+\usepackage[inline]{enumitem}
+\usepackage{subcaption}
+
+\begin{document}
+\title{The Information Bottleneck for Deep Schizophrenia Classification}
+\renewcommand{\todo}[1]{\color{red}{#1}\color{black}}
+\author{
+\IEEEauthorblockN{Brandon Boos}
+\IEEEauthorblockA{University of New Mexico\\
+btboos@unm.edu}
+\and
+\IEEEauthorblockN{Brad Baker}
+\IEEEauthorblockA{The Mind Research Network\\University of New Mexico\\bbaker@mrn.org}}
+
+% make the title area
+\maketitle
+
+% no keywords
+
+\IEEEpeerreviewmaketitle
+
+\section{Summary of Question Answered}
+Deep Neural Networks (DNNs) as a class of machine-learning model have seen a wide breadth of applications in various problem domains. Despite this prevalence of application, there is little theoretical understanding for how the various components of DNNs aid in the overall learning of complex, non-linear relationships. In an attempt to bridge this gap, a recent paper from Shwartz Et. al. proposed an information-theoretic interpretation of DNNs, based on the so-called Information-Bottleneck \cite{shwartz2017opening} method, a method which provides a theoretical framework for describing the optimal trade-off between the compression of input features $X$ and the prediction of output labels $Y$ \cite{tishby2000information}. Using this method as part of a larger information-theoretic analysis of DNNs, Shwartz et. al. argue for three main findings: 
+\begin{enumerate*}
+\item DNNs with stochastic-gradient optimization undergo two distinct phases of information increase around input labels (fitting), and decrease around input features (relaxation) which amounts to a maximization of the conditional entropy of the DNNs layers subject to an empirical error constraint,
+\item  learned layers lie very closed to the Information-Bottleneck Bound \cite{tishby2000information}, and satisfy Information-Bottleneck optimality (i.e. they maximize the optimal trade-off between compression of input features and prediction of output labels)
+\item finally, the advantage of including hidden layers in DNNs is mostly computational, with these hidden layers providing faster convergence times towards this maximization of conditional entropy of the layers.
+\end{enumerate*}\cite{shwartz2017opening}
+
+Though this interpretation of DNNs has recently sparked controversy \cite{saxe2018information,amjad2018information}, We propose a project which examines this information-theoretic interpretation of DNNs for one particular task in neuro-imaging analysis: classification of schizophrenia data. Classification of schizophrenia patients with neuroimaging data is one problem in neuroimaging which has recently seen initial success with DNNs \cite{plis2014deep,kim2016deep,han2017schizophrenia}; however, no theoretical interpretation exists for how the utilized DNNs leverage this data to perform the classification task. We believe that an investigation in the style of Shwartz et. al. 2017 \cite{shwartz2017opening} could provide initial steps towards such an explanation. 
+
+This project was originally proposed by Brad Baker as a minor research project with the Mind Research Network (MRN), building off of his previous and ongoing research there. The project was approved by Brad's supervising PI at MRN to be pursued as a course project at UNM. Email confirmation can be requested from the PI if necessary.
+
+\section{Computational Methods}
+
+All computations will be done using the Information-DNN (IDNN) python library provided by the authors of \cite{shwartz2017opening}, which is built off of the tensorflow deep learning framework. The IDNN library allows for computation and visualization of the "Information Plane" (essentially mutual information) at different stages during a DNN's optimization, and following \cite{shwartz2017opening}, for each experiment, we will perform these computations at initialization, after ~400 epochs, and after ~9000 epochs. Following \cite{shwartz2017opening}, we also compute statistics (mean, std) on the weight gradients between all layers in the implemented network during different stages in the optimization. All networks implemented for each experiment are going to be pre-established classification networks coded in tensorflow, and networks will be trained on machines with multiple GPUs.
+
+\section{Experimental Methods}
+
+Our methods are twofold: \begin{enumerate*} \item \label{meth:replication} replication of the results in \cite{shwartz2017opening}, and \item \label{meth:extension} extension of these results to the problem of schizophrenia classification \end{enumerate*}. For part \ref{meth:replication}, we utilize the IDNN library provided by the authors of \cite{shwartz2017opening} to replicate the results for the MNIST number-recognition data set, performing the computations described above, and extend the analysis by performing an additional run for different choices of hyper-parameters, all of which is supported out-of-the-box by the IDNN library. For part \ref{meth:extension}, we utilize the network implemented in \cite{kim2016deep}, which is publicly released on github; however, instead of using functional MRI data, we utilize the publicly released data from the Kaggle 2014 schizophrenia classification challenge \cite{silva2014tenth}.
+
+\bibliography{project_3}
+\bibliographystyle{IEEEtran}
+
+
+% that's all folks
+\end{document}
+
+
+

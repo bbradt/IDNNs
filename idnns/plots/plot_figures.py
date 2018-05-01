@@ -231,10 +231,10 @@ def plot_animation(name_s, save_name):
     print(loss_test_data )
     line_ani = animation.FuncAnimation(f, update_line, len(new_x), repeat=False,
                                        interval=100, blit=False, fargs=(print_loss, new_data, axes,new_x,epochs_bins, colors,loss_test_data))
-    Writer = animation.writers['ffmpeg']
+    Writer = animation.writers['imagemagick']
     writer = Writer(fps=100)
     #Save the movie
-    line_ani.save('figures/' + save_name+'_movie2.mp4',writer=writer,dpi=250)
+    line_ani.save('figures/' + save_name+'_movie2.gif',writer=writer,dpi=250)
     #plt.show()
 
 
@@ -268,10 +268,10 @@ def plot_animation_each_neuron(name_s, save_name, print_loss=False):
     """
     line_ani = animation.FuncAnimation(f, update_line_each_neuron, Ix.shape[1], repeat=False,
                                        interval=1, blit=False, fargs=(print_loss, Ix, axes,Iy,train_data,test_data,epochs_bins, loss_train_data,loss_test_data, colors,epochsInds))
-    Writer = animation.writers['ffmpeg']
+    Writer = animation.writers['imagemagick']
     writer = Writer(fps=100)
     #Save the movie
-    line_ani.save(save_name+'_movie.mp4',writer=writer,dpi=250)
+    line_ani.save(save_name+'_movie.gif',writer=writer,dpi=250)
     #plt.show()
 
 
@@ -546,10 +546,10 @@ def plot_hist(str_name, save_name='dist'):
     colors = LAYERS_COLORS
     line_ani = animation.FuncAnimation(f, update_bars_num_of_ts, len(p_ts), repeat=False,
                                        interval=1, blit=False, fargs=[p_ts,H_Xgt,DKL_YgX_YgT, axes,ind_array])
-    Writer = animation.writers['ffmpeg']
+    Writer = animation.writers['imagemagick']
     writer = Writer(fps=50)
     #Save the movie
-    line_ani.save(save_name+'_movie.mp4',writer=writer,dpi=250)
+    line_ani.save(save_name+'_movie.gif',writer=writer,dpi=250)
     #plt.show()
 
 def plot_alphas(str_name, save_name='dist'):

@@ -125,6 +125,7 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
     saver = tf.train.Saver(max_to_keep=0)
     init = tf.global_variables_initializer()
     grads = tf.gradients(model.cross_entropy, tf.trainable_variables())
+    print(batch_points, batch_points_test)
     # Train the network
     with tf.Session() as sess:
         sess.run(init)
@@ -165,11 +166,11 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
                 batch_xs = data_sets.test.data[batch_points_test[i]:batch_points_test[i + 1]]
                 batch_ys = data_sets.test.labels[batch_points_test[i]:batch_points_test[i + 1]]
                 feed_dict = {model.x: batch_xs, model.labels: batch_ys}
-                _, te_err = sess.run([optimizer, model.accuracy], feed_dict=feed_dict)
-                acc_test_array.append(tr_err)
+                # _, te_err = sess.run([optimizer, model.accuracy], feed_dict=feed_dict)
+                # acc_test_array.append(tr_err)
                 if j in indexes:
-                    epochs_grads_temp, loss_te, weights_local, te_err= sess.run(
-                        [grads, model.cross_entropy, model.weights_all, model.accuracy],
+                    loss_te, te_err= sess.run(
+                        [model.cross_entropy, model.accuracy],
                         feed_dict=feed_dict)
                     loss_func_test[k] = loss_te
                     test_prediction[k] = te_err

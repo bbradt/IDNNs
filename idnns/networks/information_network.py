@@ -30,11 +30,13 @@ class informationNetwork():
     self.activation_function = args.activation_function
     self.interval_accuracy_display = args.interval_accuracy_display
     self.save_grads = args.save_grads
+    self.net = args.net_type
     self.num_of_repeats = args.num_of_repeats
     self.calc_information_last = args.calc_information_last
     self.num_of_bins = args.num_of_bins
     self.interval_information_display = args.interval_information_display
     self.save_ws = args.save_ws
+    self.anim = args.anim
     self.name = args.data_dir + args.data_name
     self.data_name = args.data_name
     self.l1_lambda = float(args.l1_lambda)
@@ -168,6 +170,7 @@ class informationNetwork():
   def plot_network(self):
     str_names = [[self.dir_saved]]
     mode = 2
-    save_name = '%s_information_plane_lr%.4f_l1%.4f_l2%.4f_act%s' % (self.data_name, self.learning_rate, self.l1_lambda, self.l2_lambda, self.activation_function)
+    save_name = '%s_ipl_lr%.4f_l1%.4f_l2%.4f_act%s_net%s_ep%d_bat%d_cov%s' % (self.data_name, self.learning_rate, self.l1_lambda, self.l2_lambda, self.activation_function, self.net, self.num_epochs, self.batch_size, self.cov_net)
     plt_fig.plot_figures(str_names, mode, save_name)
-    # plt_fig.plot_animation(str_names, save_name)
+    if self.anim:
+         plt_fig.plot_animation(str_names, save_name)

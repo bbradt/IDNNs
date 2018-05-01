@@ -22,7 +22,7 @@ def get_default_parser(num_of_samples=None):
 	                    type=int, help='The size of the batch')
 
 	parser.add_argument('-learning_rate',
-	                    '-l', dest="learning_rate", default=0.0001,
+	                    '-l', dest="learning_rate", default=0.0004,
 	                    type=float,
 	                    help='The learning rate of the network')
 
@@ -39,7 +39,7 @@ def get_default_parser(num_of_samples=None):
 	                    help='The architecture of the networks')
 
 	parser.add_argument('-inds',
-	                    '-i', dest="inds", default='[60]',
+	                    '-i', dest="inds", default='[70]',
 	                    help='The percent of the training data')
 
 	parser.add_argument('-name',
@@ -95,7 +95,7 @@ def get_default_parser(num_of_samples=None):
 	                    help='The interval for display accuracy')
 
 	parser.add_argument('-interval_information_display',
-	                    '-iid', dest="interval_information_display", default=30, type=int,
+	                    '-iid', dest="interval_information_display", default=10, type=int,
 	                    help='The interval for display the information calculation')
 
 	parser.add_argument('-cov_net',

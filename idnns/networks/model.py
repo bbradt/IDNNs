@@ -41,7 +41,15 @@ class Model:
         if activation_function == 1:
             self.activation_function = tf.nn.relu
         elif activation_function == 2:
-            self.activation_function = None
+            self.activation_function = tf.nn.log_softmax
+        elif activation_function == 3:
+            self.activation_function = tf.nn.elu 
+        elif activation_function == 4:
+            self.activation_function = tf.nn.softplus
+        elif activation_function == 5:
+            self.activation_function = tf.nn.softsign
+        elif activation_function == 6:
+            self.activation_function = tf.nn.sigmoid
         else:
             self.activation_function = tf.nn.tanh
         self.prediction

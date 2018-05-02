@@ -5,9 +5,8 @@
 \usepackage{todonotes}
 \usepackage[inline]{enumitem}
 \usepackage{xcolor}
-\usepackage[inline]{enumitem}
 \usepackage{subcaption}
-
+\graphicspath{{./figures/}}
 \begin{document}
 \title{The Information Bottleneck for Deep Schizophrenia Classification}
 \renewcommand{\todo}[1]{\color{red}{#1}\color{black}}
@@ -67,7 +66,7 @@ For all of our analyses, we utilize the tools provided on GitHub by the authors 
 
 We first extend the analysis in \cite{shwartz2017opening} by taking a look at how the changes in SGD optimization hyper parameters change the information-plane dynamics of a given DNN. For the purpose of our analysis we focus on three classes of hyper-parameter: the Learning Rate, Regularization Parameters, and the Activation functions. In complex adaptive system terms, this analysis amounts to a changing of the structure of the underlying complex model, where the learning rate and regularization terms operate on the scale of the global optimization, and the activation function operates on the scale of individual neurons. 
 
-For all of these tests, we used a symbol 5
+To compare more directly with the results in \cite{shwartz2017opening}, we utilize the provided numerical data created by the authors of \cite{shwartz2017opening}.
 
 
 
@@ -79,11 +78,41 @@ In this section, we
 
 \subsection{The Information-Plane view of Hyper-Parameters}
 
+\begin{figure*}
+	\begin{subfigure}{0.32\linewidth}
+    \label{fig:tanh_activation}
+	\includegraphics[width=\columnwidth]{activations/tanh.png}
+    \subcaption{tanh}
+    \end{subfigure}
+    	\begin{subfigure}{0.32\linewidth}
+    \label{fig:elu_activation}
+\includegraphics[width=\columnwidth]{activations/elu.png}
+   \subcaption{elu}
+\end{subfigure}
+    	\begin{subfigure}{0.32\linewidth}
+    \label{fig:sigmoid_activation}
+	\includegraphics[width=\columnwidth]{activations/sigmoid.png}
+   \subcaption{sigmoid}
+\end{subfigure}
+        	\begin{subfigure}{0.32\linewidth}
+    \label{fig:sp_activation}
+	\includegraphics[width=\columnwidth]{activations/softplus.png}
+   \subcaption{softplus}
+\end{subfigure}
+        	\begin{subfigure}{0.32\linewidth}
+    \label{fig:ss_activation}
+	\includegraphics[width=\columnwidth]{activations/softsign.png}
+   \subcaption{softsign}
+\end{subfigure}
+        	\begin{subfigure}{0.32\linewidth}
+    \label{fig:lsm_activation}
+	\includegraphics[width=\columnwidth]{activations/log_softmax.png}
+   \subcaption{log softmax}
+\end{subfigure}
+\end{figure*}
+
 \subsection{The Information-Plane View of Schizophrenia Classification}
 
-\begin{figure}
-\caption{Loss/Error for Different Hyper-Parameters.}
-\end{figure}
 
 \begin{figure}
 \caption{An information-based figure for Hyper-Parameters based off figure 5, for learning rate and l1 regularization}

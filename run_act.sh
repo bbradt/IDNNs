@@ -6,5 +6,5 @@ for i in "${activations[@]}"
 do
     echo "ACTIVATION"
     echo $i
-    python main.py -activation_function $i -num_epochs 3000 -num_repeat 10
+    python main.py -activation_function $i -num_epochs 8000 -num_repeat 10
 done

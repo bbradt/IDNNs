@@ -11,7 +11,7 @@ import re
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-data',
-                        '-d', dest="data", default="jobs/net_sampleLen=1_batch=512_DataName=var_u_nDistSmpls=1_nEpochInds=274_layerSizes=10,7,5,4,3_lr=0.001_nEpoch=8000_nRepeats=1_LastEpochsInds=7999",
+                        '-d', dest="data", default="jobs/net_batch=512_LastEpochsInds=48_nEpoch=50_nDistSmpls=1_DataName=var_u_layerSizes=10,7,5,4,3_nEpochInds=49_sampleLen=1_nRepeats=5_lr=0.0004",
                         type=str, help='The folder with saved data for the network')
     parser.add_argument('-name',
                         '-n', dest="save_name", default="Fig6Temp",
@@ -51,6 +51,12 @@ def main():
         xLine = [IxMean[i] + IxStd[i], IxMean[i] - IxStd[i]]
         yLine = [IyMean[i], IyMean[i]]
         ax1.plot(xLine, yLine, 'b', linewidth=3)
+        if IyStd[i] == 0 and IxStd[i] == 0:
+            x1 = f1.add_subplot(111)
+            xLine = [IxMean[i] + 0.01, IxMean[i] - 0.01]
+            yLine = [IyMean[i], IyMean[i]]
+            ax1.plot(xLine, yLine, 'b', linewidth=3)
+    ax1.legend(loc='best')
     f1.savefig(save_name + '.png', dpi=500, format='png')
 
 

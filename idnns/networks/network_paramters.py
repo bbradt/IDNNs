@@ -120,7 +120,7 @@ def select_network_arch(type_net):
     """Selcet the architectures of the networks according to their type
     we can choose also costume network for example type_net=[size_1, size_2, size_3]"""
     if type_net == '1':
-        layers_sizes = [[10, 7, 5, 4, 3]]
+        layers_sizes = [[10, 7, 5, 4, 3, 4, 5, 7, 10]]
     elif type_net == '1-2-3':
         layers_sizes = [[10, 9, 7, 7, 3], [10, 9, 7, 5, 3], [10, 9, 7, 3, 3]]
     elif type_net == '11':

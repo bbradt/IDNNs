@@ -101,12 +101,14 @@ class Model:
                 for i in range(1, len(self.all_layer_sizes)):
                     name_scope = 'hidden' + str(i - 1)
                     row_size, col_size = self.all_layer_sizes[i - 1], self.all_layer_sizes[i]
+                    print(i, row_size, col_size)
                     activation_function = self.activation_function
                     last_hidden = self.initilizae_layer(name_scope, row_size, col_size, activation_function,
                                                         last_hidden)
                 name_scope = 'final_layer'
-                row_size, col_size = self.layerSize[-1], self.num_of_classes
-                activation_function = tf.nn.softmax
+                row_size, col_size = self.all_layer_sizes[i], self.all_layer_sizes[0]
+                print(i, row_size, col_size)
+                activation_function = self.activation_function
                 last_hidden = self.initilizae_layer(name_scope, row_size, col_size, activation_function, last_hidden)
         return self.hidden
 
@@ -131,7 +133,8 @@ class Model:
 
     @lazy_property
     def labels(self):
-        return tf.placeholder(tf.float32, shape=[None, self.num_of_classes], name='y_true')
+        return self.x
+        #return tf.placeholder(tf.float32, shape=[None, self.num_of_classes], name='y_true')
 
     @lazy_property
     def accuracy(self):

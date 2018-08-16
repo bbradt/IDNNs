@@ -125,7 +125,7 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
     saver = tf.train.Saver(max_to_keep=0)
     init = tf.global_variables_initializer()
     grads = tf.gradients(model.cross_entropy, tf.trainable_variables())
-    print(batch_points, batch_points_test)
+    print("batch", batch_points, batch_points_test)
     # Train the network
     with tf.Session() as sess:
         sess.run(init)

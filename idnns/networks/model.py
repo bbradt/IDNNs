@@ -133,7 +133,7 @@ class Model:
 
     @lazy_property
     def labels(self):
-        return self.x
+        return tf.placeholder(tf.float32, shape=[None, self.input_size], name='y_true')
         #return tf.placeholder(tf.float32, shape=[None, self.num_of_classes], name='y_true')
 
     @lazy_property
@@ -146,8 +146,8 @@ class Model:
     @lazy_property
     def cross_entropy(self):
         cross_entropy = tf.reduce_mean(
-            -tf.reduce_sum(self.labels * tf.log(tf.clip_by_value(
-                    self.prediction, 1e-50, 1.0)), reduction_indices=[1]))
+            tf.reduce_sum(tf.square(self.labels - 
+                    self.prediction), reduction_indices=[1]))
         if self.l1_lambda:
             l1_regularizer = tf.contrib.layers.l1_regularizer(
                     scale=self.l1_lambda, scope=None)

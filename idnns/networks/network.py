@@ -60,6 +60,9 @@ def exctract_activity(sess, batch_points_all, model, data_sets_org):
     for i in range(0, len(batch_points_all) - 1):
         batch_xs = data_sets_org.data[batch_points_all[i]:batch_points_all[i + 1]]
         batch_ys = data_sets_org.labels[batch_points_all[i]:batch_points_all[i + 1]]
+        #print(batch_xs)
+        #print(batch_ys)
+       # print(all(batch_xs == batch_ys))
         feed_dict_temp = {model.x: batch_xs, model.labels: batch_ys}
         w_temp_local = sess.run([model.hidden_layers],
                                 feed_dict=feed_dict_temp)
@@ -93,7 +96,7 @@ def print_accuracy(batch_points_test, data_sets, model, sess, j, acc_train_array
                        feed_dict=feed_dict_temp)
         acc_array.append(acc)
         loss_array.append(loss_te)
-    print ('Epoch {0} - Test Accuracy: {1:.3f} Train Accuracy: {2:.3f}'.format(j, np.mean(np.array(acc_array)),
+    print ('Epoch {0} - Test Loss: {1:.3f} Train Accuracy: {2:.3f}'.format(j, np.mean(np.array(loss_array)),
                                                                                np.mean(np.array(acc_train_array))))
     return(acc_array, loss_array)
 
@@ -147,12 +150,13 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
                 batch_ys = data_sets.train.labels[batch_points[i]:batch_points[i + 1]]
                 feed_dict = {model.x: batch_xs, model.labels: batch_ys}
                 _, tr_err = sess.run([optimizer, model.accuracy], feed_dict=feed_dict)
-                acc_train_array.append(tr_err)
+                #acc_train_array.append(tr_err)
                 if j in indexes:
                     epochs_grads_temp, loss_tr, weights_local = sess.run(
                         [grads, model.cross_entropy, model.weights_all],
                         feed_dict=feed_dict)
                     loss_func_train[k] = loss_tr
+                    acc_train_array.append(loss_tr)
                     train_prediction[k] = tr_err
                     for e_i, e in enumerate(epochs_grads_temp):
                         grad_l1[k] = np.linalg.norm(e, ord=1)

@@ -1,6 +1,6 @@
 import matplotlib
 
-matplotlib.use("TkAgg")
+matplotlib.use("Agg")
 import scipy.io as sio
 
 import matplotlib.pyplot as plt

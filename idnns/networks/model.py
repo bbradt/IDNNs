@@ -90,7 +90,7 @@ class Model:
             self.hidden, self.inputs, self.weights_all, self.biases_all = [], [], [], []
             last_hidden = self.x
             if self.covnet == 1:
-                y_conv, self._drouput, self.hidden, self.inputs = deepnn(self.x)
+                y_conv, self._drouput, self.hidden, self.inputs = deepnn(self.x, self.keep_prob)
             elif self.covnet == 2:
                 y_c, self.hidden, self.inputs = multi_layer_perceptron(self.x, self.input_size, self.num_of_classes,
                                                                        self.layerSize[0], self.layerSize[1])
@@ -134,6 +134,10 @@ class Model:
         return tf.placeholder(tf.float32, shape=[None, self.num_of_classes], name='y_true')
 
     @lazy_property
+    def keep_prob(self):
+        return tf.placeholder(tf.float32, name='keep_prob')
+
+    @lazy_property
     def accuracy(self):
         correct_prediction = tf.equal(tf.argmax(self.prediction, 1), tf.argmax(self.labels, 1))
         accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
@@ -171,13 +175,13 @@ class Model:
         """Return the predication of the network with the given data"""
         with tf.Session() as sess:
             self.saver.restore(sess, './' + self.save_file)
-            feed_dict = {self.x: data}
+            feed_dict = {self.x: data, self.keep_prob: 0.5}
             pred = sess.run(self.prediction, feed_dict=feed_dict)
         return pred
 
     def inference_default(self, data):
         session = tf.get_default_session()
-        feed_dict = {self.x: data}
+        feed_dict = {self.x: data, self.keep_prob: 0.5}
         pred = session.run(self.prediction, feed_dict=feed_dict)
         return pred
 
@@ -193,7 +197,7 @@ class Model:
         """Return the layer's values"""
         with tf.Session() as sess:
             self.savers[-1].restore(sess, './' + self.save_file)
-            feed_dict = {self.x: X}
+            feed_dict = {self.x: X, self.keep_prob: 0.5}
             layer_values = sess.run(self.hidden_layers[layer_index], feed_dict=feed_dict)
         return layer_values
 
@@ -209,7 +213,7 @@ class Model:
         weights_values_pert = weights_values
         weights_values_pert[i, j] += d_w_i_j
         set_value(weights, weights_values_pert)
-        feed_dict = {self.x: X}
+        feed_dict = {self.x: X, self.keep_prob: 0.5}
         layer_values = session.run(self.hidden_layers[layer_to_perturbe], feed_dict=feed_dict)
         set_value(weights, weights_values)
         return layer_values
@@ -230,6 +234,6 @@ class Model:
         """Return the input of the given layer for the given data"""
         session = tf.get_default_session()
         inputs = self.inputs[layer_to_perturbe]
-        feed_dict = {self.x: X}
+        feed_dict = {self.x: X, self.keep_prob: 0.5}
         layer_values = session.run(inputs, feed_dict=feed_dict)
         return layer_values

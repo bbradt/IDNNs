@@ -39,7 +39,7 @@ def multi_layer_perceptron(x, n_input, n_classes, n_hidden_1, n_hidden_2):
 	return y_output, hidden, input
 
 
-def deepnn(x):
+def deepnn(x, keep_prob):
 	"""deepnn builds the graph for a deep net for classifying digits.
 	Args:
 	  x: an input tensor with the dimensions (N_examples, 784), where 784 is the
@@ -104,7 +104,6 @@ def deepnn(x):
 			tf.summary.histogram('activations', h_fc1)
 
 	with tf.name_scope('drouput'):
-		keep_prob = tf.placeholder(tf.float32)
 		tf.summary.scalar('dropout_keep_probability', keep_prob)
 		h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
 		input.append(input_fc1)

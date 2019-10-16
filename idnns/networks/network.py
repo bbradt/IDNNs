@@ -60,7 +60,7 @@ def exctract_activity(sess, batch_points_all, model, data_sets_org):
     for i in range(0, len(batch_points_all) - 1):
         batch_xs = data_sets_org.data[batch_points_all[i]:batch_points_all[i + 1]]
         batch_ys = data_sets_org.labels[batch_points_all[i]:batch_points_all[i + 1]]
-        feed_dict_temp = {model.x: batch_xs, model.labels: batch_ys}
+        feed_dict_temp = {model.x: batch_xs, model.labels: batch_ys, model.keep_prob: 0.5}
         w_temp_local = sess.run([model.hidden_layers],
                                 feed_dict=feed_dict_temp)
         for s in range(len(w_temp_local[0])):
@@ -88,7 +88,7 @@ def print_accuracy(batch_points_test, data_sets, model, sess, j, acc_train_array
     for i in range(0, len(batch_points_test) - 1):
         batch_xs = data_sets.test.data[batch_points_test[i]:batch_points_test[i + 1]]
         batch_ys = data_sets.test.labels[batch_points_test[i]:batch_points_test[i + 1]]
-        feed_dict_temp = {model.x: batch_xs, model.labels: batch_ys}
+        feed_dict_temp = {model.x: batch_xs, model.labels: batch_ys, model.keep_prob: 0.5}
         acc, loss_te = sess.run([model.accuracy, model.cross_entropy],
                        feed_dict=feed_dict_temp)
         acc_array.append(acc)
@@ -145,7 +145,7 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
             for i in range(0, len(batch_points) - 1):
                 batch_xs = data_sets.train.data[batch_points[i]:batch_points[i + 1]]
                 batch_ys = data_sets.train.labels[batch_points[i]:batch_points[i + 1]]
-                feed_dict = {model.x: batch_xs, model.labels: batch_ys}
+                feed_dict = {model.x: batch_xs, model.labels: batch_ys, model.keep_prob: 0.5}
                 _, tr_err = sess.run([optimizer, model.accuracy], feed_dict=feed_dict)
                 acc_train_array.append(tr_err)
                 if j in indexes:
@@ -154,18 +154,20 @@ def train_network(layerSize, num_of_ephocs, learning_rate_local, batch_size, ind
                         feed_dict=feed_dict)
                     loss_func_train[k] = loss_tr
                     train_prediction[k] = tr_err
-                    for e_i, e in enumerate(epochs_grads_temp):
-                        grad_l1[k] = np.linalg.norm(e, ord=1)
-                        grad_l2[k] = np.linalg.norm(e, ord=2)
-                    grad_l1[k] = np.mean(grad_l1[k])
-                    grad_l2[k] = np.mean(grad_l2[k])
+                    if covn_net == 0:
+                        for e_i, e in enumerate(epochs_grads_temp):
+                            print("e.shape %s" % str(e.shape))
+                            grad_l1[k] = np.linalg.norm(e, ord=1)
+                            grad_l2[k] = np.linalg.norm(e, ord=2)
+                        grad_l1[k] = np.mean(grad_l1[k])
+                        grad_l2[k] = np.mean(grad_l2[k])
                     epochs_grads.append(epochs_grads_temp)
                     for ii in range(len(current_weights)):
                         current_weights[ii].append(weights_local[ii])
             for i in range(0, len(batch_points_test) - 1):
                 batch_xs = data_sets.test.data[batch_points_test[i]:batch_points_test[i + 1]]
                 batch_ys = data_sets.test.labels[batch_points_test[i]:batch_points_test[i + 1]]
-                feed_dict = {model.x: batch_xs, model.labels: batch_ys}
+                feed_dict = {model.x: batch_xs, model.labels: batch_ys, model.keep_prob: 0.5}
                 # _, te_err = sess.run([optimizer, model.accuracy], feed_dict=feed_dict)
                 # acc_test_array.append(tr_err)
                 if j in indexes:
